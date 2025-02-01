@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-nginx
+  template:
+    metadata:
+      labels:
+        app: flask-nginx
+    spec:
+      containers:
+        - name: flask-nginx
+          image: gayu0801/flask-app:latest  # Your Docker Hub image
+          ports:
+            - containerPort: 5000  # Flask app runs on port 5000
