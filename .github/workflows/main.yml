@@ -1,0 +1,40 @@
+name: Node Docker CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm install
+
+    - name: Lint or test backend code (optional)
+      working-directory: ./backend
+      run: |
+        echo "Tests could be run here"
+
+    - name: Build Docker images
+      run: docker-compose build
+
+    - name: Start Docker containers
+      run: |
+        docker-compose up -d
+        sleep 10
+
+    - name: Stop containers
+      run: docker-compose down
